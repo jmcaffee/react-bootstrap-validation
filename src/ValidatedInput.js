@@ -5,10 +5,9 @@ export default class ValidatedInput extends React.Component {
     constructor(props) {
         super(props);
 
-        const {validationEvent, validate, errorHelp, _registerInput, _unregisterInput, ...inputProps} = props;
+        const {validationEvent, validate, errorHelp, _registerInput, _unregisterInput, ...rest} = props;
         this._registerInput = _registerInput;
         this._unregisterInput = _unregisterInput;
-        this.inputProps = inputProps;
         if (!this._registerInput || !this._unregisterInput) {
             throw new Error('Input must be placed inside the Form component');
         }
@@ -23,7 +22,9 @@ export default class ValidatedInput extends React.Component {
     }
 
     render() {
-        return <FormControl ref='control' {...this.inputProps}>{this.props.children}</FormControl>;
+        // Capture props at time of render and strip local component data.
+        const {validationEvent, validate, errorHelp, _registerInput, _unregisterInput, ...inputProps} = this.props;
+        return <FormControl ref='control' {...inputProps}>{this.props.children}</FormControl>;
     }
 }
 
